@@ -1,47 +1,40 @@
 const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
+//const bodyParser = require("body-parser");
+const registerRoute = require("./routes/register");
+const loginRoute = require("./routes/login");
+const composeRoute = require("./routes/compose");
+const postsRoute = require("./routes/posts");
+const Post = require("./models/post.model");
 const bodyParser = require("body-parser");
 
-mongoose.connect("mongodb://localhost:27017/pongBlogDB");
-const app = express();
+app.use(cors());
+//app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const postSchema = mongoose.Schema({
-  title: String,
-  content: String,
-});
 
-const Post = mongoose.model("post", postSchema);
+app.use(bodyParser.json());
+
+app.use("/api/register", registerRoute);
+app.use("/api/login", loginRoute);
+app.use("/compose", composeRoute);
+app.use("/posts", postsRoute);
+
+mongoose.connect("mongodb://localhost:27017/pongBlogDB", {
+  useNewUrlParser: true,
+});
+// const currentUser = function (req, res, next) {
+//   req.currentUser = null;
+//   next();
+// };
+//app.use(currentUser);
 
 ///
-// app.get("/", function (req, res) {
-//   Post.find({}, function (err, posts) {
-//     res.json({ posts: posts });
-//   });
-// });
-
-app.get("/posts", function (req, res, next) {
+app.get("/", function (req, res) {
   Post.find({}, function (err, posts) {
     res.json({ posts: posts });
   });
-});
-
-app.get("/posts/:postId", function (req, res) {
-  Post.find({ _id: req.params.postId }, function (err, post) {
-    if (post) {
-      res.json(post);
-    } else {
-      console.log("no post found");
-    }
-  });
-});
-
-app.post("/compose", function (req, res) {
-  let post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-  });
-  post.save();
-  res.redirect("/");
 });
 
 ////////

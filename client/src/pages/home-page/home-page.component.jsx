@@ -5,6 +5,7 @@ import Post from "../../components/post/post.component";
 
 const HomePage = () => {
   const [backendData, setBackendData] = useState(null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
     async function getData() {
       await fetch("/posts")
@@ -16,8 +17,21 @@ const HomePage = () => {
     }
     getData();
   }, []);
+
+  useEffect(() => {
+    async function getData() {
+      await fetch("/login")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setUser(data);
+        });
+    }
+    getData();
+  }, []);
   return (
     <div className="home-page">
+      {user ? <div className="">{user.userName}</div> : null}
       <h1>Blog</h1>
       {backendData ? (
         backendData.posts.map((post) => (
