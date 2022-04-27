@@ -10,13 +10,24 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [backendData, setBackendData] = useState(null);
   return (
     <BrowserRouter>
       <div className="App">
         <Header currentUser={currentUser} />
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <HomePage
+                backendData={backendData}
+                setBackendData={setBackendData}
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+              />
+            }
+          />
           <Route path="/compose" element={<Compose />} />
           <Route path={`/posts/:id`} element={<FullPost />} />
           <Route

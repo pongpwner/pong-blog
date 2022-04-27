@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./login.styles.scss";
+import jwt_decode from "jwt-decode";
 
 const Login = ({ setCurrentUser }) => {
   const [username, setUsername] = useState("");
@@ -24,8 +25,10 @@ const Login = ({ setCurrentUser }) => {
     if (data.user) {
       localStorage.setItem("token", data.user);
       alert("Login successful");
-      console.log(data.user);
-      setCurrentUser(data.user);
+
+      const token = jwt_decode(data.user);
+      console.log(token.username);
+      setCurrentUser(token.username);
       // window.location.href = "/";
     } else {
       alert("Please check your username and password");

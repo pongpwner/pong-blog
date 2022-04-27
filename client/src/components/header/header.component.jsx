@@ -18,7 +18,7 @@ const Header = ({ currentUser }) => (
         <li className="navi-list-item">
           <Link to="/register">Register</Link>
         </li>
-        {currentUser ? <div>{currentUser.loginName}</div> : null}
+        {currentUser ? <div>{currentUser}</div> : null}
       </ul>
     </nav>
   </div>

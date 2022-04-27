@@ -7,6 +7,7 @@ const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const composeRoute = require("./routes/compose");
 const postsRoute = require("./routes/posts");
+const userRoute = require("./routes/user");
 const Post = require("./models/post.model");
 const bodyParser = require("body-parser");
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 app.use("/api/register", registerRoute);
 app.use("/api/login", loginRoute);
+app.use("/api/user", userRoute);
 app.use("/compose", composeRoute);
 app.use("/posts", postsRoute);
 

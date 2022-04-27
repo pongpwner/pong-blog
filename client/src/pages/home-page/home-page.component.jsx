@@ -5,11 +5,15 @@ import Post from "../../components/post/post.component";
 //import jwt from "jsonwebtoken";
 import jwt_decode from "jwt-decode";
 
-const HomePage = () => {
-  const [backendData, setBackendData] = useState(null);
-  const [user, setUser] = useState(null);
+const HomePage = ({
+  currentUser,
+  setCurrentUser,
+  backendData,
+  setBackendData,
+}) => {
+  //add fetch user in here later
   useEffect(() => {
-    async function getData() {
+    async function getPosts() {
       await fetch("/posts", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
@@ -20,36 +24,73 @@ const HomePage = () => {
           console.log(data);
           if (data.status === "ok") {
             setBackendData(data);
+            //setCurrentUser(data.username);
+          }
+        });
+    }
+    async function getCurrentUser() {
+      await fetch("/api/user", {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.status === "ok") {
+            setCurrentUser(data.username);
+            //setCurrentUser(data.username);
           }
         });
     }
     const token = localStorage.getItem("token");
     if (token) {
       const user = jwt_decode(token);
-      console.log(user);
+      //console.log(user);
       if (!user) {
         localStorage.removeItem("token");
       } else {
-        //populate posts
-        getData();
+        //populate posts and get user
+        getPosts();
+        getCurrentUser();
       }
     }
   }, []);
 
-  useEffect(() => {
-    async function getData() {
-      await fetch("/login")
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setUser(data);
-        });
-    }
-    getData();
-  }, []);
+  //fetch username
+
+  // useEffect(() => {
+  //   async function getData() {
+  //     await fetch("/api/user", {
+  //       headers: {
+  //         "x-access-token": localStorage.getItem("token"),
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log(data);
+  //         if (data.status === "ok") {
+  //           setCurrentUser(data);
+  //           //setCurrentUser(data.username);
+  //         }
+  //       });
+  //   }
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     const user = jwt_decode(token);
+  //     console.log(user);
+  //     if (!user) {
+  //       localStorage.removeItem("token");
+  //     } else {
+  //      // get user
+  //       getData();
+  //     }
+  //   }
+  // }, []);
+
   return (
     <div className="home-page">
-      {user ? <div className="">{user.userName}</div> : null}
+      {currentUser ? <div className="">{currentUser}</div> : null}
       <h1>Blog</h1>
       {backendData ? (
         backendData.posts.map((post) => (
