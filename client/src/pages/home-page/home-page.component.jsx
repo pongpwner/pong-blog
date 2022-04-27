@@ -2,20 +2,38 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./home-page.styles.scss";
 import Post from "../../components/post/post.component";
+//import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
 
 const HomePage = () => {
   const [backendData, setBackendData] = useState(null);
   const [user, setUser] = useState(null);
   useEffect(() => {
     async function getData() {
-      await fetch("/posts")
+      await fetch("/posts", {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          setBackendData(data);
+          if (data.status === "ok") {
+            setBackendData(data);
+          }
         });
     }
-    getData();
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = jwt_decode(token);
+      console.log(user);
+      if (!user) {
+        localStorage.removeItem("token");
+      } else {
+        //populate posts
+        getData();
+      }
+    }
   }, []);
 
   useEffect(() => {

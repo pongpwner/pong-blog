@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./login.styles.scss";
 
 const Login = ({ setCurrentUser }) => {
-  const [loginName, setLoginName] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   async function onSubmitLogin(e) {
     e.preventDefault();
@@ -14,19 +14,19 @@ const Login = ({ setCurrentUser }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        loginName,
-        loginPassword,
+        username: username,
+        password: password,
       }),
     });
     //window.location.href = "/";
     const data = await response.json();
 
     if (data.user) {
-      localStorage.setItem("token1", data.user);
+      localStorage.setItem("token", data.user);
       alert("Login successful");
       console.log(data.user);
       setCurrentUser(data.user);
-      window.location.href = "/";
+      // window.location.href = "/";
     } else {
       alert("Please check your username and password");
     }
@@ -43,21 +43,21 @@ const Login = ({ setCurrentUser }) => {
         <h2 className="heading-2">Login</h2>
         <label className="form-label">User Name</label>
         <input
-          onChange={(e) => setLoginName(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           type="text"
           className="text"
           placeholder="username"
-          value={loginName}
+          value={username}
         />
         <label className="form-label">Password</label>
         <input
           onChange={(e) => {
-            setLoginPassword(e.target.value);
+            setPassword(e.target.value);
           }}
           type="password"
           className="text"
           placeholder="password"
-          value={loginPassword}
+          value={password}
         />
         <input
           type="submit"
