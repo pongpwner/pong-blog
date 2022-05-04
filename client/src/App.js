@@ -7,14 +7,37 @@ import Header from "./components/header/header.component";
 import Login from "./pages/login/login.component";
 import Register from "./pages/register/register.component";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+//"proxy": "http://localhost:5000",      in pcak.json
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [backendData, setBackendData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  // First thing, check if a refreshtoken exist
+  useEffect(() => {
+    async function checkRefreshToken() {
+      const result = await (
+        await fetch("http://localhost:5000/api/refresh-token", {
+          method: "POST",
+          credentials: "include", // Needed to include the cookie
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      ).json();
+      setCurrentUser({
+        accesstoken: result.accesstoken,
+      });
+      setLoading(false);
+    }
+    checkRefreshToken();
+  }, []);
+
+  //if (loading) return <div>Loading ...</div>;
   return (
     <BrowserRouter>
       <div className="App">
-        <Header currentUser={currentUser} />
+        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
         <Routes>
           <Route
@@ -32,7 +55,12 @@ const App = () => {
           <Route path={`/posts/:id`} element={<FullPost />} />
           <Route
             path="/login"
-            element={<Login setCurrentUser={setCurrentUser} />}
+            element={
+              <Login
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            }
           />
           <Route path="register" element={<Register />} />
         </Routes>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./login.styles.scss";
-import jwt_decode from "jwt-decode";
+//import jwt_decode from "jwt-decode";
 
-const Login = ({ setCurrentUser }) => {
+const Login = ({ setCurrentUser, currentUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,6 +11,7 @@ const Login = ({ setCurrentUser }) => {
 
     const response = await fetch("http://localhost:5000/api/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,19 +23,25 @@ const Login = ({ setCurrentUser }) => {
     //window.location.href = "/";
     const data = await response.json();
 
-    if (data.user) {
-      localStorage.setItem("token", data.user);
+    if (data.accesstoken) {
+      // localStorage.setItem("token", data.user);
       alert("Login successful");
 
-      const token = jwt_decode(data.user);
-      console.log(token.username);
-      setCurrentUser(token.username);
-      // window.location.href = "/";
+      //this line is problematiac set current user
+      setCurrentUser({
+        accesstoken: data.accesstoken,
+      });
+      // const token = jwt_decode(data.user);
+      // console.log(token.username);
+      // setCurrentUser(token.username);
+      //window.location.href = "/";
     } else {
       alert("Please check your username and password");
     }
   }
-
+  useEffect(() => {
+    console.log();
+  }, [currentUser]);
   return (
     <div className="login">
       <form

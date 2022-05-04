@@ -6,7 +6,7 @@ const Compose = () => {
   return (
     <div className="compose">
       <h1 className="heading-1">Compose</h1>
-      <form action="/compose" className="post-form" method="post">
+      <form action="/api/compose" className="post-form" method="post">
         <label className="form-label">Title:</label>
         <input type="text" className="post-title" name="title" />
 
