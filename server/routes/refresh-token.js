@@ -9,7 +9,7 @@ const {
 } = require("../utils/tokens");
 
 router.route("/").post(async (req, res) => {
-  console.log("/////////////////////////////////////////////////////////////");
+  //console.log("/////////////////////////////////////////////////////////////");
   //console.log("TOKEN   :" + req.cookies.refreshtoken);
   const token = req.cookies.refreshtoken;
   // If we don't have a token in our request
@@ -25,14 +25,14 @@ router.route("/").post(async (req, res) => {
   // token is valid, check if user exist
   //const user = fakeDB.find((user) => user.id === payload.userId);
 
-  console.log(payload);
+  //console.log(payload);
   const user = await User.findOne({ _id: payload.userId });
 
   if (!user) {
-    console.log("no user");
+    //console.log("no user");
     return res.send({ accesstoken: "" });
   }
-  console.log(user.username);
+  //console.log(user.username);
   //** COMEBACK WHEN ADD SESSION TO USER COLLECTION */
   // user exist, check if refreshtoken exist on user
   // if (user.token !== token) {

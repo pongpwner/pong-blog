@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./home-page.styles.scss";
 import Post from "../../components/post/post.component";
 //import jwt from "jsonwebtoken";
-import jwt_decode from "jwt-decode";
 
 const HomePage = ({
   currentUser,
@@ -11,43 +10,48 @@ const HomePage = ({
   backendData,
   setBackendData,
 }) => {
-  //add fetch user in here later
-  // useEffect(() => {
-  //   async function getPosts() {
-  //     await fetch("/posts")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log(data);
-  //         if (data.status === "ok") {
-  //           setBackendData(data);
-  //           //setCurrentUser(data.username);
-  //         }
-  //       });
-  //   }
-  // async function getCurrentUser() {
-  //   await fetch("/api/user")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       if (data.status === "ok") {
-  //         setCurrentUser(data.username);
-  //         //setCurrentUser(data.username);
-  //       }
-  //     });
-  // }
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     const user = jwt_decode(token);
-  //     //console.log(user);
-  //     if (!user) {
-  //       localStorage.removeItem("token");
-  //     } else {
-  //       //populate posts and get user
-  //       getPosts();
-  //       getCurrentUser();
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log(currentUser);
+    async function getPosts() {
+      console.log("cuurent user:" + currentUser);
+      const result = await (
+        await fetch("http://localhost:5000/api/posts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${currentUser.accesstoken}`,
+          },
+        })
+      ).json();
+      setBackendData(result);
+
+      // await fetch("/api/posts")
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     console.log(data);
+      //     if (data.status === "ok") {
+      //       setBackendData(data);
+      //       //setCurrentUser(data.username);
+      //     }
+      //   });
+    }
+    if (currentUser) {
+      getPosts();
+    }
+    //getPosts();
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   const user = jwt_decode(token);
+    //   //console.log(user);
+    //   if (!user) {
+    //     localStorage.removeItem("token");
+    //   } else {
+    //     //populate posts and get user
+    //     getPosts();
+
+    //   }
+    // }
+  }, [currentUser]);
 
   //fetch username
 
@@ -80,10 +84,10 @@ const HomePage = ({
   //   }
   // }, []);
 
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
-
+  // useEffect(() => {
+  //   console.log(currentUser);
+  // }, [currentUser]);
+  //console.log(backendData);
   return (
     <div className="home-page">
       <h1>Blog</h1>
@@ -97,7 +101,7 @@ const HomePage = ({
           />
         ))
       ) : (
-        <div>loading</div>
+        <div>login to see posts</div>
       )}
     </div>
   );

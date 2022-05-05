@@ -1,20 +1,27 @@
 const Post = require("../models/post.model");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
+const { isAuth } = require("../utils/isAuth");
 
-router.route("/").get(function (req, res) {
-  const token = req.headers["x-access-token"];
+router.route("/").post(async function (req, res) {
+  console.log("postsssssssssssssssssssssssssssssssssssssssss");
+  //const token = req.headers["x-access-token"];
 
   try {
-    const decoded = jwt.verify(token, "secret123");
-
-    const username = decoded.username;
-
-    Post.find({}, function (err, posts) {
-      res.json({ status: "ok", posts: posts });
-    });
+    console.log(req.headers);
+    poop();
+    const userId = isAuth(req);
+    console.log("after auth");
+    console.log("userId:" + userId);
+    if (userId !== null) {
+      Post.find({}, function (err, posts) {
+        res.send({ status: "ok", posts: posts });
+      });
+    }
+    //res.json({ status: "error", error: "invalid token", posts: [] });
+    //res.send(null);
   } catch (error) {
-    res.json({ status: "error", error: "invalid token" });
+    res.json({ status: "error", error: "invalid token", posts: [] });
   }
 });
 
