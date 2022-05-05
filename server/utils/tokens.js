@@ -1,7 +1,7 @@
 const { sign } = require("jsonwebtoken");
 //create tokens
-const createAccessToken = (userId) => {
-  return sign({ userId }, "i", {
+const createAccessToken = (userId, username) => {
+  return sign({ userId, username }, "i", {
     expiresIn: "15m",
   });
 };
@@ -14,10 +14,10 @@ const createRefreshToken = (userId) => {
 
 // Send tokens
 // ----------------------------------
-const sendAccessToken = (req, res, accesstoken) => {
+const sendAccessToken = (req, res, accesstoken, username) => {
   res.send({
     accesstoken,
-    username: req.body.username,
+    username: username,
   });
 };
 

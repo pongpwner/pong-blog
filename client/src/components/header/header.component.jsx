@@ -37,7 +37,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
             </li>
           )}
 
-          {currentUser ? <div>{currentUser.accesstoken}</div> : null}
+          {currentUser ? <div>{currentUser.username}</div> : null}
         </ul>
       </nav>
     </div>

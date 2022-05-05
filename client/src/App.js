@@ -27,6 +27,7 @@ const App = () => {
       ).json();
       setCurrentUser({
         accesstoken: result.accesstoken,
+        username: result.username,
       });
       setLoading(false);
     }

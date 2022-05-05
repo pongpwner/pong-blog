@@ -28,8 +28,11 @@ const Login = ({ setCurrentUser, currentUser }) => {
       alert("Login successful");
 
       //this line is problematiac set current user
+      console.log(data.accesstoken);
+      console.log(data.accesstoken.username);
       setCurrentUser({
         accesstoken: data.accesstoken,
+        username: data.username,
       });
       // const token = jwt_decode(data.user);
       // console.log(token.username);
