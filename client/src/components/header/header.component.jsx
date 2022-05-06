@@ -9,8 +9,9 @@ const Header = ({ currentUser, setCurrentUser }) => {
       credentials: "include", // Needed to include the cookie
     });
     // Clear user from context
-    setCurrentUser(null);
+    setCurrentUser({ username: "" });
   };
+  console.log(currentUser);
   return (
     <div className="header">
       <nav className="navi">
@@ -21,21 +22,21 @@ const Header = ({ currentUser, setCurrentUser }) => {
           <li className="navi-list-item">
             <Link to="/compose">Compose</Link>
           </li>
-          {currentUser ? (
+          {currentUser.username === "" ? null : (
             <button className="log-out" onClick={logOutCallback}>
               Log Out
             </button>
-          ) : null}
-          {currentUser ? null : (
+          )}
+          {currentUser.username === "" ? (
             <li className="navi-list-item">
               <Link to="/login">Login</Link>
             </li>
-          )}
-          {currentUser ? null : (
+          ) : null}
+          {currentUser.username === "" ? (
             <li className="navi-list-item">
               <Link to="/register">Register</Link>
             </li>
-          )}
+          ) : null}
 
           {currentUser ? <div>{currentUser.username}</div> : null}
         </ul>

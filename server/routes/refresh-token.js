@@ -13,7 +13,7 @@ router.route("/").post(async (req, res) => {
   //console.log("TOKEN   :" + req.cookies.refreshtoken);
   const token = req.cookies.refreshtoken;
   // If we don't have a token in our request
-  if (!token) return res.send({ accesstoken: "" });
+  if (!token) return res.send({ accesstoken: "", username: "" });
   // We have a token, let's verify it!
   let payload = null;
   try {
@@ -29,8 +29,8 @@ router.route("/").post(async (req, res) => {
   const user = await User.findOne({ _id: payload.userId });
 
   if (!user) {
-    //console.log("no user");
-    return res.send({ accesstoken: "" });
+    console.log("no user");
+    return res.send({ accesstoken: "", username: "" });
   }
   //console.log(user.username);
   //** COMEBACK WHEN ADD SESSION TO USER COLLECTION */

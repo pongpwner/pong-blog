@@ -37,7 +37,7 @@ const Login = ({ setCurrentUser, currentUser }) => {
       // const token = jwt_decode(data.user);
       // console.log(token.username);
       // setCurrentUser(token.username);
-      //window.location.href = "/";
+      window.location.href = "/";
     } else {
       alert("Please check your username and password");
     }
