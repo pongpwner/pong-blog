@@ -1,13 +1,12 @@
 import React from "react";
 import "./comment-list.styles.scss";
-
+import Comment from "../comment/comment.component";
 const CommentList = ({ comments }) => {
   return (
     <div>
       {comments
         ? comments.map((comment) => (
-            <div>{` ${comment.userName}:${comment.content}
-       `}</div>
+            <Comment username={comment.userName} content={comment.content} />
           ))
         : null}
     </div>
