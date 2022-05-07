@@ -1,4 +1,5 @@
 const Post = require("../models/post.model");
+const Comment = require("../models/comment.model");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const { isAuth } = require("../utils/isAuth");
@@ -19,13 +20,13 @@ router.route("/:postId").get(function (req, res) {
   });
 });
 router.route("/:postId/comments").post(function (req, res) {
-  console.log("commentssssssssssssssssssssssssssssssssssssssssssss");
+  //console.log("commentssssssssssssssssssssssssssssssssssssssssssss");
   try {
-    console.log(req.headers);
+    //console.log(req.headers);
 
     const userId = isAuth(req);
-    console.log("after auth");
-    console.log("userId:" + userId);
+    //console.log("after auth");
+    //console.log("userId:" + userId);
     if (userId !== null) {
       res.send({ authenticated: true, status: "ok", comments: [] });
     }
@@ -38,6 +39,30 @@ router.route("/:postId/comments").post(function (req, res) {
       error: "invalid token",
       posts: [],
     });
+  }
+});
+
+router.route("/:postId/comment").post(async function (req, res) {
+  console.log("postcommentssssssssssssssssssssssssssssssssss");
+  console.log(req.body);
+  const { userName, postId, content } = req.body;
+
+  try {
+    await Comment.create(
+      {
+        userName: userName,
+        postId: postId,
+        content: content,
+      },
+      function (err) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+    res.json({ status: "ok" });
+  } catch (err) {
+    res.json({ status: "error", error: "unable to create comment" });
   }
 });
 

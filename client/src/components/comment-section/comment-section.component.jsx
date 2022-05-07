@@ -7,6 +7,7 @@ import { UserContext } from "../../App";
 const CommentSection = ({ id }) => {
   const [accesstoken] = useContext(UserContext);
   const [commentData, setCommentData] = useState({ authenticated: false });
+
   useEffect(() => {
     async function checkAuth() {
       console.log(accesstoken);
@@ -27,7 +28,7 @@ const CommentSection = ({ id }) => {
     <div className="comment-section">
       {commentData.authenticated ? (
         <div>
-          <CommentInput />
+          <CommentInput id={id} />
           <CommentList />
         </div>
       ) : (
