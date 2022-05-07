@@ -18,6 +18,7 @@ const CommentSection = ({ id }) => {
             "Content-Type": "application/json",
             authorization: `Bearer ${accesstoken.accesstoken}`,
           },
+          body: JSON.stringify({ postId: id }),
         })
       ).json();
       setCommentData(result);
@@ -29,7 +30,7 @@ const CommentSection = ({ id }) => {
       {commentData.authenticated ? (
         <div>
           <CommentInput id={id} />
-          <CommentList />
+          <CommentList comments={commentData.comments} />
         </div>
       ) : (
         <div>Log in to access the comments section</div>

@@ -19,16 +19,26 @@ router.route("/:postId").get(function (req, res) {
     }
   });
 });
-router.route("/:postId/comments").post(function (req, res) {
-  //console.log("commentssssssssssssssssssssssssssssssssssssssssssss");
+router.route("/:postId/comments").post(async function (req, res) {
+  console.log("commentssssssssssssssssssssssssssssssssssssssssssss");
+  const { postId } = req.body;
   try {
-    //console.log(req.headers);
+    // console.log(req.headers);
 
     const userId = isAuth(req);
-    //console.log("after auth");
-    //console.log("userId:" + userId);
+    console.log("after auth");
+    console.log("userId:" + userId);
     if (userId !== null) {
-      res.send({ authenticated: true, status: "ok", comments: [] });
+      console.log("inboys");
+      Comment.find({ postId: postId }, function (err, comments) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("returniong comments..............................");
+          console.log(comments);
+          res.send({ authenticated: true, status: "ok", comments: comments });
+        }
+      });
     }
     //res.json({ status: "error", error: "invalid token", posts: [] });
     //res.send(null);
@@ -37,7 +47,7 @@ router.route("/:postId/comments").post(function (req, res) {
       authenticated: false,
       status: "error",
       error: "invalid token",
-      posts: [],
+      comments: [],
     });
   }
 });
