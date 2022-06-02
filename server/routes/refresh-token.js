@@ -1,4 +1,5 @@
 const router = require("express").Router();
+require("dotenv").config({ path: "../../.env" });
 const User = require("../models/user.model");
 const { verify } = require("jsonwebtoken");
 const {
@@ -17,7 +18,8 @@ router.route("/").post(async (req, res) => {
   // We have a token, let's verify it!
   let payload = null;
   try {
-    payload = verify(token, "i");
+    payload = verify(token, process.env.REFRESH_TOKEN_SECRET);
+    //i  process.env.REFRESH_TOKEN
   } catch (err) {
     console.log(err.message);
     return res.send({ accesstoken: null });

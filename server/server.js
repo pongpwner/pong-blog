@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config({ path: "../.env" });
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -52,4 +53,6 @@ app.get("/", function (req, res) {
 });
 
 ////////
-app.listen(5000, () => console.log("server started on port 5000"));
+app.listen(process.env.PORT, () =>
+  console.log(`server started on port ${process.env.PORT}`)
+);

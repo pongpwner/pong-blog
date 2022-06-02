@@ -1,13 +1,17 @@
 const { sign } = require("jsonwebtoken");
+require("dotenv").config({ path: "../../.env" });
+
 //create tokens
 const createAccessToken = (userId, username) => {
-  return sign({ userId, username }, "i", {
+  return sign({ userId, username }, process.env.ACCESS_TOKEN_SECRET, {
+    //i  process.env.ACCESS_TOKEN
     expiresIn: "15m",
   });
 };
 
 const createRefreshToken = (userId) => {
-  return sign({ userId }, "i", {
+  return sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
+    //i process.env.REFRESH_TOKEN,
     expiresIn: "7d",
   });
 };

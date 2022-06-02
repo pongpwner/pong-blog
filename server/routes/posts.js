@@ -20,9 +20,11 @@ router.route("/:postId").get(function (req, res) {
   });
 });
 router.route("/:postId/comments").post(async function (req, res) {
-  console.log("commentssssssssssssssssssssssssssssssssssssssssssss");
+  console.log("commentssssssssssssssssssssssssssssssssssssssssssss1");
   const { postId } = req.body;
+  console.log("1");
   try {
+    console.log("2");
     // console.log(req.headers);
 
     const userId = isAuth(req);
